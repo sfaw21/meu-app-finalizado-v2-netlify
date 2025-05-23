@@ -243,7 +243,7 @@ function App() {
 
         {/* Passo 3: Pagamento */}
         {currentStep === 3 && (
-          <div className="flex flex-col items-center justify-center p-6 bg-gray-50 min-h-screen"> {/* Fundo da página do Passo 3: Pagamento (tela cinza claro) */}
+          <div className="flex flex-col items-center justify-center p-6 bg-gray-50 min-h-screen">
             <div className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-2xl">
               <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Finalizar Pedido</h2>
 
@@ -352,7 +352,7 @@ function App() {
                 )}
 
                 {selectedPaymentMethod === 'pix' && (
-                  <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg mx-auto"> {/* Fundo da caixa do Pix (mantido bg-white) */}
+                  <div className="bg-white p-6 rounded-lg shadow-xl max-w-lg mx-auto">
                     <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Pagamento via Pix</h2>
                     
                     {/* Fundo da área do QR Code Pix (mantido #e6dcd0 para o quadrado interno) */}
@@ -395,7 +395,6 @@ function App() {
                 <p className="text-gray-600"><strong>Total:</strong> R$ 94,05</p>
                 <p className="text-gray-600"><strong>Entrega Estimada:</strong> {deliveryOption === 'correios' ? '6 a 9 dias úteis' : '3 a 5 dias úteis'}</p>
               </div>
-
             </div>
           </div>
         )}
@@ -403,7 +402,7 @@ function App() {
         {/* Passo 4: Confirmação do Pedido */}
         {currentStep === 4 && (
           <div className="flex flex-col items-center justify-center p-6 bg-[#e6dcd0] min-h-screen"> {/* ALTERADO AQUI: bg-green-50 para bg-[#e6dcd0] */}
-            <div className="w-full max-w-xl bg-white p-8 rounded-xl shadow-2xl text-center"> {/* Fundo da caixa é branco */}
+            <div className="w-full max-w-xl bg-white p-8 rounded-xl shadow-2xl text-center">
               <CheckCircle size={80} className="text-green-500 mx-auto mb-6" />
               <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Pedido Confirmado!</h2>
               <p className="text-xl text-gray-700 mb-8">Obrigado pela sua compra. Seu pedido foi processado com sucesso!</p>
